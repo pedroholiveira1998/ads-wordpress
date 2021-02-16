@@ -19,6 +19,10 @@ function AdsOperationsTable()
   `description` varchar(220) DEFAULT NULL,
   `tag` varchar(220) DEFAULT NULL,
   `image_path` varchar(220) DEFAULT NULL,
+  `create_date` varchar(220) DEFAULT NULL,
+  `create_by` varchar(220) DEFAULT NULL,
+  `update_date` varchar(220) DEFAULT NULL,
+  `update_by` varchar(220) DEFAULT NULL,
   PRIMARY KEY(id)
   ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
   ";
@@ -35,14 +39,26 @@ function addAdminPageContent()
 function adsAdminPage()
 {
   global $wpdb;
+  $current_user = wp_get_current_user();
+
+  function getDatetimeNow() {
+    $tz_object = new DateTimeZone('Brazil/East');
+
+    $datetime = new DateTime();
+    $datetime->setTimezone($tz_object);
+    return $datetime->format('d\-m\-Y\ h:i:s');
+  }
+
   $table_name = $wpdb->prefix . 'ads';
   if (isset($_POST['newsubmit'])) {
     $name = $_POST['name'];
     $description = $_POST['description'];
     $tag = $_POST['tag'];
     $image_path = $_POST['imagepath'];
+    $now = getDatetimeNow();
 
-    $wpdb->query("INSERT INTO $table_name (`name`, `description`, `tag`, `image_path`) VALUES ('$name', '$description', '$tag', '$image_path')");
+    $wpdb->query("INSERT INTO $table_name (`name`, `description`, `tag`, `image_path`, `create_date`, `create_by`, `update_date`, `update_by`) 
+                  VALUES ('$name', '$description', '$tag', '$image_path', '$now', '$current_user->user_email', 'Nunca', '')");
   }
 
   if (isset($_POST['updatesubmit'])) {
@@ -51,8 +67,10 @@ function adsAdminPage()
     $description = $_POST['description'];
     $tag = $_POST['tag'];
     $image_path = $_POST['imagepath'];
+    $now = getDatetimeNow();
 
-    $wpdb->query("UPDATE $table_name SET name='$name',description='$description', tag='$tag', image_path='$image_path'  WHERE id='$id'");
+    $wpdb->query("UPDATE $table_name SET name='$name',description='$description', tag='$tag', image_path='$image_path', update_date='$now', 
+                  update_by='$current_user->user_email'  WHERE id='$id'");
   }
 
   if (isset($_GET['delete'])) {
@@ -118,7 +136,7 @@ function adsAdminPage()
         $image_path = $ads->image_path;
       }
       
-      echo 
+      echo
         "
         <table class='wp-list-table widefat striped'>
           <thead>
