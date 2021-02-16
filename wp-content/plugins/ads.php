@@ -14,12 +14,12 @@ function AdsOperationsTable()
   $charset_collate = $wpdb->get_charset_collate();
   $table_name = $wpdb->prefix . 'ads';
   $sql = "CREATE TABLE `$table_name` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(220) DEFAULT NULL,
   `description` varchar(220) DEFAULT NULL,
   `tag` varchar(220) DEFAULT NULL,
   `image_path` varchar(220) DEFAULT NULL,
-  PRIMARY KEY(user_id)
+  PRIMARY KEY(id)
   ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
   ";
   if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
@@ -45,10 +45,19 @@ function adsAdminPage()
     $wpdb->query("INSERT INTO $table_name (`name`, `description`, `tag`, `image_path`) VALUES ('$name', '$description', '$tag', '$image_path')");
   }
 
+  if (isset($_POST['updatesubmit'])) {
+    $id = $_POST['id'];
+    $name = $_POST['name'];
+    $description = $_POST['description'];
+    $tag = $_POST['tag'];
+    $image_path = $_POST['imagepath'];
+
+    $wpdb->query("UPDATE $table_name SET name='$name',description='$description', tag='$tag', image_path='$image_path'  WHERE id='$id'");
+  }
+
   if (isset($_GET['delete'])) {
-  $delete_id = $_GET['delete'];
-  $wpdb->query("DELETE FROM $table_name WHERE user_id='$delete_id'");
-    
+    $delete_id = $_GET['delete'];
+    $wpdb->query("DELETE FROM $table_name WHERE id='$delete_id'");
   }
 
 ?>
@@ -83,13 +92,48 @@ function adsAdminPage()
                 <td width='20%'>$ads->description</td>
                 <td width='20%'>$ads->tag</td>
                 <td width='20%'>$ads->image_path</td>
-                <td width='20%'><button type='button'>Editar</button><a href='admin.php?page=ads.php&delete=$ads->user_id'><button type='button'>Excluir</button></a></td>
+                <td width='20%'><a href='admin.php?page=ads.php&update=$ads->id'><button type='button'>Editar</button></a><a href='admin.php?page=ads.php&delete=$ads->id'><button type='button'>Excluir</button></a></td>
               </tr>
             ";
         }
         ?>
       </tbody>
     </table>
+    <?php
+      if (isset($_GET['update'])) {
+        $upt_id = $_GET['update'];
+        $result = $wpdb->get_results("SELECT * FROM $table_name WHERE id='$upt_id'");
+        foreach($result as $ads) {
+          $name = $ads->name;
+          $description = $ads->description;
+          $tag = $ads->tag;
+          $image_path = $ads->image_path;
+        }
+        echo "
+        <table class='wp-list-table widefat striped'>
+          <thead>
+            <tr>
+              <th width='20%'>Nome</th>
+              <th width='20%'>Descrição</th>
+              <th width='20%'>Tag</th>
+              <th width='20%'>Imagem</th>
+            </tr>
+          </thead>
+          <tbody>
+            <form action='' method='post'>
+              <tr>
+                <td style='display:none'><input type='text' id='update-name' name='id' value='$ads->id'></td>
+                <td width='20%'><input type='text' id='update-name' name='name' value='$ads->name'></td>
+                <td width='20%'><input type='text' id='update-description' name='description' value='$ads->description'></td>
+                <td width='20%'><input type='text' id='update-description' name='tag' value='$ads->tag'></td>
+                <td width='20%'><input type='text' id='update-description' name='imagepath' value='$ads->image_path'></td>
+                <td width='20%'><button id='updatetsubmit' name='updatesubmit' type='submit'>UPDATE</button> <a href='admin.php?page=ads.php'><button type='button'>CANCEL</button></a></td>
+              </tr>
+            </form>
+          </tbody>
+        </table>";
+      }
+    ?>
   </div>
 <?php
 }
