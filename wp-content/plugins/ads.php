@@ -45,6 +45,12 @@ function adsAdminPage()
     $wpdb->query("INSERT INTO $table_name (`name`, `description`, `tag`, `image_path`) VALUES ('$name', '$description', '$tag', '$image_path')");
   }
 
+  if (isset($_GET['delete'])) {
+  $delete_id = $_GET['delete'];
+  $wpdb->query("DELETE FROM $table_name WHERE user_id='$delete_id'");
+    
+  }
+
 ?>
 
   <div class="wrap">
@@ -77,7 +83,7 @@ function adsAdminPage()
                 <td width='20%'>$ads->description</td>
                 <td width='20%'>$ads->tag</td>
                 <td width='20%'>$ads->image_path</td>
-                <td width='20%'><button type='button'>Editar</button><button type='button'>Excluir</button></a></td>
+                <td width='20%'><button type='button'>Editar</button><a href='admin.php?page=ads.php&delete=$ads->user_id'><button type='button'>Excluir</button></a></td>
               </tr>
             ";
         }
