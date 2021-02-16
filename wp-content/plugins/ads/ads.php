@@ -132,14 +132,14 @@ function adsAdminPage()
           <tbody>
             <form action='' method='post'>
               <tr>
-                <td style='display:none'><input type='text' id='update-name' name='id' value='$ads->id'></td>
+                <td style='display:none'><input type='text' id='update-id' name='id' value='$ads->id'></td>
                 <td width='20%'>
                 <input type='text' id='new-image' name='imagepath' value='$ads->image_path'>
                 <input type='button' name='upload-btn' id='upload-btn' class='button-secondary' value='Upload Image'>
                 </td>
                 <td width='20%'><input type='text' id='update-name' name='name' value='$ads->name'></td>
                 <td width='20%'><input type='text' id='update-description' name='description' value='$ads->description'></td>
-                <td width='20%'><input type='text' id='update-description' name='tag' value='$ads->tag'></td>
+                <td width='20%'><input type='text' id='update-tag' name='tag' value='$ads->tag'></td>
                 <td width='20%'><button id='updatetsubmit' name='updatesubmit' type='submit'>UPDATE</button> <a href='admin.php?page=ads%2Fads.php'><button type='button'>CANCEL</button></a></td>
               </tr>
             </form>
