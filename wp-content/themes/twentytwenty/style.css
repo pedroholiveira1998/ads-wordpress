@@ -6469,6 +6469,16 @@ a.to-the-top > * {
 		top: 0;
 	}
 }
+
+.ads-list {
+	width: 100%;
+	margin: auto;
+}
+
+.box {
+	margin-top: 30px;
+}
+
 .info {
     display: flex;
     justify-content: space-between;
