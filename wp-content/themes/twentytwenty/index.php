@@ -30,6 +30,7 @@ function filter($str)
 {
   return addslashes($str);
 }
+
 function getPost($key)
 {
   return isset($_POST[$key]) ? filter($_POST[$key]) : null;
@@ -43,22 +44,26 @@ if (isset($_POST['remove'])) {
   $filter = "SELECT * FROM wp_ads";
 }
 
-echo '<form class="input-search" action="" method="post">
-
-        <label>Nome: <input class="input-form" type="text" name="n" /></label>
-        <label>Tag: <input class="input-form" type="text" name="t" /></label>
-        <label><input type="submit" name="ok" value="Pesquisar" /></label>
+echo "
+      <form class='input-search' action='' method='post'>
+        <label>Nome: <input class='input-form' type='text' name='n' /></label>
+        <label>Tag: <input class='input-form' type='text' name='t' /></label>
+        <label><input type='submit' name='ok' value='Pesquisar' /></label>
       </form>
-      <form class="input-search" action="" method="post">
-        <label><input type="submit" name="remove" value="Remover filtros"/></label>
+      <form class='input-search' action='' method='post'>
+        <label><input type='submit' name='remove' value='Remover filtros'/></label>
       </form>
-      <form class="input-search" action="" method="post">
-        <label><input type="submit" name="order" value="Ordenar por data"/></label>
-      </form>';
+      <form class='input-search' action='' method='post'>
+        <label><input type='submit' name='order' value='Ordenar por data'/></label>
+      </form>
+      ";
 
 $results = $wpdb->get_results(!isset($filter) ? "SELECT * FROM wp_ads" : $filter);
-echo "<div class='container'>
+
+echo "
+      <div class='container'>
     ";
+
 foreach ($results as $ads) {
   echo "
         <div class='content'>
@@ -81,8 +86,10 @@ foreach ($results as $ads) {
           </div>
           <hr class='post-separator styled-separator is-style-wide section-inner' aria-hidden='true' />
         </div>
-          ";
+        ";
 }
 echo " 
-      </div>";
+      </div>
+    ";
+
 get_footer();
