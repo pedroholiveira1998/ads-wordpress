@@ -43,43 +43,46 @@ if (isset($_POST['remove'])) {
   $filter = "SELECT * FROM wp_ads";
 }
 
-echo '<form action="" method="post">
-        Buscar por:
-        <label>Nome: <input type="text" name="n" /></label>
-        <label>Tag: <input type="text" name="t" /></label>
-        <label><input type="submit" name="ok" value="Ok" /></label>
+echo '<form class="input-search" action="" method="post">
+
+        <label>Nome: <input class="input-form" type="text" name="n" /></label>
+        <label>Tag: <input class="input-form" type="text" name="t" /></label>
+        <label><input type="submit" name="ok" value="Pesquisar" /></label>
       </form>
-      <form action="" method="post">
+      <form class="input-search" action="" method="post">
         <label><input type="submit" name="remove" value="Remover filtros"/></label>
       </form>
-      <form action="" method="post">
+      <form class="input-search" action="" method="post">
         <label><input type="submit" name="order" value="Ordenar por data"/></label>
       </form>';
 
 $results = $wpdb->get_results(!isset($filter) ? "SELECT * FROM wp_ads" : $filter);
 echo "<div class='container'>
-        <div class='content'>
     ";
 foreach ($results as $ads) {
   echo "
-          <div class='box' style='display: flex'>
+        <div class='content'>
+          <div class='box'>
+                  <div class='name site-title'>
+                      $ads->name
+                  </div>
                 <div class='image'>
-                  <img width='400px' src='$ads->image_path'><img>
+                  <img src='$ads->image_path'><img>
                 </div>
-                <div class='info site-description'>
-                  <div>
-                      Nome: $ads->name
+                <div class='info'>
+                  <div class='description entry-content'>
+                      $ads->description
                   </div>
-                  <div>
-                      Descrição: $ads->description
-                  </div>
-                  <div>
-                      Tag: $ads->tag
+                  <div class='tag'>
+                 
+                      $ads->tag
                   </div>
                 </div>
           </div>
+          <hr class='post-separator styled-separator is-style-wide section-inner' aria-hidden='true' />
+        </div>
           ";
 }
-echo "  </div>
+echo " 
       </div>";
-get_header();
+get_footer();

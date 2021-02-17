@@ -6470,19 +6470,58 @@ a.to-the-top > * {
 	}
 }
 
-.ads-list {
+.container {
 	width: 100%;
 	margin: auto;
+	
+}
+
+.content {
+	width: 100%;
+	
 }
 
 .box {
-	margin-top: 30px;
+    display: flex;
+    width: 50%;
+    margin: 30px auto;
+    background: #fff;
+    padding: 35px;
+	flex-direction: column;
+	max-width: 800px;
+	border-radius: 10px;
+	min-width: 300px;
 }
 
-.info {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
+.name {
+	padding-bottom: 15px;
+}
+
+.description {
+	padding-top: 30px;
+}
+
+.tag {
+	padding-top: 20px;
+	color: #3376a3;
+	font-size: 15px;
+}
+
+.image {
+	display: flex;
     align-self: center;
-    height: 120px;
+} 
+
+.image > img {
+	width: 100%;
+	max-width: 730px;
+}
+
+.input-search {
+	padding-top: 20px;
+	padding-left: 30px;
+}
+
+.input-form {
+	width: 30% !important;
 }
