@@ -16,7 +16,7 @@ function AdsOperationsTable()
   $sql = "CREATE TABLE `$table_name` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(220) DEFAULT NULL,
-  `description` varchar(220) DEFAULT NULL,
+  `description` varchar(16383) DEFAULT NULL,
   `tag` varchar(220) DEFAULT NULL,
   `image_path` varchar(220) DEFAULT NULL,
   `create_date` varchar(220) DEFAULT NULL,

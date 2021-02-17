@@ -65,7 +65,9 @@ echo "
     ";
 
 foreach ($results as $ads) {
-  echo "
+  echo "<head>
+            <link rel='stylesheet' type='text/css' href='wp-content/themes/twentytwenty/style.css'>
+        </head>
         <div class='content'>
           <div class='box'>
                   <div class='name site-title'>
@@ -79,7 +81,6 @@ foreach ($results as $ads) {
                       $ads->description
                   </div>
                   <div class='tag'>
-                 
                       $ads->tag
                   </div>
                 </div>
