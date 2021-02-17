@@ -7,7 +7,7 @@ O projeto consiste em uma funcionalidade desenvolvida para WordPress que gerenci
 
 ## Aplicação
 
-A aplicação foi desenvolvida em Wordpress tendo como banco de dados o MySQL.
+A aplicação foi desenvolvida em WordPress tendo como banco de dados o MySQL.
 
 ## Pré-requisitos para o setup:
 
@@ -49,7 +49,7 @@ wordpress
 
 1. Abra o URL da aplicação e selecione a linguagem desejada.
 
-2. Preencha os campos e instale o Wordpress.
+2. Preencha os campos e instale o WordPress.
 
 3. Logue com as credencias que cadastrou e no menu lateral esquerdo clique em Plugins.
 
