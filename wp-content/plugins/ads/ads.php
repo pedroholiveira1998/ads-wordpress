@@ -31,11 +31,14 @@ function AdsOperationsTable()
     dbDelta($sql);
   }
 }
+
 add_action('admin_menu', 'addAdminPageContent');
+
 function addAdminPageContent()
 {
   add_menu_page('ADS', 'ADS', 'manage_options', __FILE__, 'AdsAdminPage', 'dashicons-feedback');
 }
+
 function adsAdminPage()
 {
   global $wpdb;
@@ -58,7 +61,7 @@ function adsAdminPage()
     $now = getDatetimeNow();
 
     $wpdb->query("INSERT INTO $table_name (`name`, `description`, `tag`, `image_path`, `create_date`, `create_by`, `update_date`, `update_by`) 
-                  VALUES ('$name', '$description', '$tag', '$image_path', '$now', '$current_user->user_email', 'Nunca', '')");
+                  VALUES ('$name', '$description', '$tag', '$image_path', '$now', '$current_user->user_email', '-', '-')");
   }
 
   if (isset($_POST['updatesubmit'])) {
@@ -109,22 +112,48 @@ function adsAdminPage()
             <td><button id="newsubmit" name="newsubmit" type="submit">Inserir</button></td>
           </tr>
         </form>
+      </tbody>
+    </table>
+
         <?php
         $results = $wpdb->get_results("SELECT * FROM $table_name");
+        echo "
+        <table class='wp-list-table widefat striped'>
+        <thead>
+          <tr>
+          <th width='11.1%'>Imagem</th>
+            <th width='11.1%'>Nome</th>
+            <th width='11.1%'>Descrição</th>
+            <th width='11.1%'>Tag</th>
+            <th width='11.1%'>Data da criação</th>
+            <th width='11.1%'>Criado por</th>
+            <th width='11.1%'>Data da atualização</th>
+            <th width='11.1%'>Atualizado por</th>
+            <th width='11.1%'>Opções</th>
+          </tr>
+        </thead>
+        ";
         foreach ($results as $ads) {
           echo "
+          <tbody>
+          <table class='wp-list-table widefat striped'>
               <tr>
-                <td width='20%'><img width='80px' src='$ads->image_path'><img></td>
-                <td width='20%'>$ads->name</td>
-                <td width='20%'>$ads->description</td>
-                <td width='20%'>$ads->tag</td>
-                <td width='20%'><a href='admin.php?page=ads%2Fads.php&update=$ads->id'><button type='button'>Editar</button></a><a href='admin.php?page=ads%2Fads.php&delete=$ads->id'><button type='button'>Excluir</button></a></td>
+                <td width='11.1%'><img width='80px' src='$ads->image_path'><img></td>
+                <td width='11.1%'>$ads->name</td>
+                <td width='11.1%'>$ads->description</td>
+                <td width='11.1%'>$ads->tag</td>
+                <td width='11.1%'>$ads->create_date</td>
+                <td width='11.1%'>$ads->create_by</td>
+                <td width='11.1%'>$ads->update_date</td>
+                <td width='11.1%'>$ads->update_by</td>
+                <td width='11.1%'><a href='admin.php?page=ads%2Fads.php&update=$ads->id'><button type='button'>Editar</button></a><a href='admin.php?page=ads%2Fads.php&delete=$ads->id'><button type='button'>Excluir</button></a></td>
               </tr>
+              </tbody>
+          </table>
             ";
         }
         ?>
-      </tbody>
-    </table>
+
     <?php
     if (isset($_GET['update'])) {
       $upt_id = $_GET['update'];
@@ -136,35 +165,36 @@ function adsAdminPage()
         $image_path = $ads->image_path;
       }
       
-      echo
-        "
-        <table class='wp-list-table widefat striped'>
-          <thead>
+      echo "
+      <table class='wp-list-table widefat striped'>
+        <thead>
+          <tr>
+            <th width='20%'>Nome</th>
+            <th width='20%'>Descrição</th>
+            <th width='20%'>Tag</th>
+            <th width='20%'>Imagem</th>
+          </tr>
+        </thead>
+        <tbody>
+          <form action='' method='post'>
             <tr>
-              <th width='20%'>Nome</th>
-              <th width='20%'>Descrição</th>
-              <th width='20%'>Tag</th>
-              <th width='20%'>Imagem</th>
+              <td style='display:none'><input type='text' id='update-id' name='id' value='$ads->id'></td>
+              <td width='20%'>
+              <input type='text' id='new-image' name='imagepath' value='$ads->image_path' required>
+              <input type='button' name='upload-btn' id='upload-btn' class='button-secondary' value='Upload Image'>
+              </td>
+              <td width='20%'><input type='text' id='update-name' name='name' value='$ads->name' required></td>
+              <td width='20%'><input type='text' id='update-description' name='description' value='$ads->description' required></td>
+              <td width='20%'><input type='text' id='update-tag' name='tag' value='$ads->tag' required></td>
+              <td width='20%'><button id='updatetsubmit' name='updatesubmit' type='submit'>UPDATE</button> <a href='admin.php?page=ads%2Fads.php'><button type='button'>CANCEL</button></a></td>
             </tr>
-          </thead>
-          <tbody>
-            <form action='' method='post'>
-              <tr>
-                <td style='display:none'><input type='text' id='update-id' name='id' value='$ads->id'></td>
-                <td width='20%'>
-                <input type='text' id='new-image' name='imagepath' value='$ads->image_path' required>
-                <input type='button' name='upload-btn' id='upload-btn' class='button-secondary' value='Upload Image'>
-                </td>
-                <td width='20%'><input type='text' id='update-name' name='name' value='$ads->name' required></td>
-                <td width='20%'><input type='text' id='update-description' name='description' value='$ads->description' required></td>
-                <td width='20%'><input type='text' id='update-tag' name='tag' value='$ads->tag' required></td>
-                <td width='20%'><button id='updatetsubmit' name='updatesubmit' type='submit'>UPDATE</button> <a href='admin.php?page=ads%2Fads.php'><button type='button'>CANCEL</button></a></td>
-              </tr>
-            </form>
-          </tbody>
-        </table>";
+          </form>
+        </tbody>
+      </table>";
     }
     ?>
   </div>
+
 <?php
+
 }
