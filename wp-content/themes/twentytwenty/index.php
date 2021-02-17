@@ -1,119 +1,85 @@
 <?php
-/**
- * The main template file
- *
- * This is the most generic template file in a WordPress theme
- * and one of the two required files for a theme (the other being style.css).
- * It is used to display a page when nothing more specific matches a query.
- * E.g., it puts together the home page when no home.php file exists.
- *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
- *
- * @package WordPress
- * @subpackage Twenty_Twenty
- * @since Twenty Twenty 1.0
- */
+/* Template Name: Lista Anuncios */
 
 get_header();
-?>
 
-<main id="site-content" role="main">
+global $wpdb;
+$filter;
 
-	<?php
+if (isset($_POST['n']) || isset($_POST['t'])) {
+  $where = array();
 
-	$archive_title    = '';
-	$archive_subtitle = '';
+  $name = getPost('n');
+  $tag = getPost('t');
 
-	if ( is_search() ) {
-		global $wp_query;
+  if ($name) {
+    $where[] = " `name` LIKE '%{$name}%'";
+  }
+  if ($tag) {
+    $where[] = " `tag` LIKE '%{$tag}%'";
+  }
 
-		$archive_title = sprintf(
-			'%1$s %2$s',
-			'<span class="color-accent">' . __( 'Search:', 'twentytwenty' ) . '</span>',
-			'&ldquo;' . get_search_query() . '&rdquo;'
-		);
+  $sql = "SELECT * FROM wp_ads ";
+  if (sizeof($where))
+    $sql .= ' WHERE ' . implode(' AND ', $where);
 
-		if ( $wp_query->found_posts ) {
-			$archive_subtitle = sprintf(
-				/* translators: %s: Number of search results. */
-				_n(
-					'We found %s result for your search.',
-					'We found %s results for your search.',
-					$wp_query->found_posts,
-					'twentytwenty'
-				),
-				number_format_i18n( $wp_query->found_posts )
-			);
-		} else {
-			$archive_subtitle = __( 'We could not find any results for your search. You can give it another try through the search form below.', 'twentytwenty' );
-		}
-	} elseif ( is_archive() && ! have_posts() ) {
-		$archive_title = __( 'Nothing Found', 'twentytwenty' );
-	} elseif ( ! is_home() ) {
-		$archive_title    = get_the_archive_title();
-		$archive_subtitle = get_the_archive_description();
-	}
+  $filter = $sql; 
+}
 
-	if ( $archive_title || $archive_subtitle ) {
-		?>
+function filter($str)
+{
+  return addslashes($str);
+}
+function getPost($key)
+{
+  return isset($_POST[$key]) ? filter($_POST[$key]) : null;
+}
 
-		<header class="archive-header has-text-align-center header-footer-group">
+if (isset($_POST['order'])) {
+  $filter = "SELECT * FROM wp_ads ORDER BY create_date DESC";
+}
 
-			<div class="archive-header-inner section-inner medium">
+if (isset($_POST['remove'])) {
+  $filter = "SELECT * FROM wp_ads";
+}
 
-				<?php if ( $archive_title ) { ?>
-					<h1 class="archive-title"><?php echo wp_kses_post( $archive_title ); ?></h1>
-				<?php } ?>
+echo '<form action="" method="post">
+        Buscar por:
+        <label>Nome: <input type="text" name="n" /></label>
+        <label>Tag: <input type="text" name="t" /></label>
+        <label><input type="submit" name="ok" value="Ok" /></label>
+      </form>
+      <form action="" method="post">
+        <label><input type="submit" name="remove" value="Remover filtros"/></label>
+      </form>
+      <form action="" method="post">
+        <label><input type="submit" name="order" value="Ordenar por data"/></label>
+      </form>';
 
-				<?php if ( $archive_subtitle ) { ?>
-					<div class="archive-subtitle section-inner thin max-percentage intro-text"><?php echo wp_kses_post( wpautop( $archive_subtitle ) ); ?></div>
-				<?php } ?>
-
-			</div><!-- .archive-header-inner -->
-
-		</header><!-- .archive-header -->
-
-		<?php
-	}
-
-	if ( have_posts() ) {
-
-		$i = 0;
-
-		while ( have_posts() ) {
-			$i++;
-			if ( $i > 1 ) {
-				echo '<hr class="post-separator styled-separator is-style-wide section-inner" aria-hidden="true" />';
-			}
-			the_post();
-
-			get_template_part( 'template-parts/content', get_post_type() );
-
-		}
-	} elseif ( is_search() ) {
-		?>
-
-		<div class="no-search-results-form section-inner thin">
-
-			<?php
-			get_search_form(
-				array(
-					'label' => __( 'search again', 'twentytwenty' ),
-				)
-			);
-			?>
-
-		</div><!-- .no-search-results -->
-
-		<?php
-	}
-	?>
-
-	<?php get_template_part( 'template-parts/pagination' ); ?>
-
-</main><!-- #site-content -->
-
-<?php get_template_part( 'template-parts/footer-menus-widgets' ); ?>
-
-<?php
-get_footer();
+$results = $wpdb->get_results(!isset($filter) ? "SELECT * FROM wp_ads" : $filter);
+echo "<div class='container'>
+        <div class='content'>
+    ";
+foreach ($results as $ads) {
+  echo "
+          <div class='box' style='display: flex'>
+                <div class='image'>
+                  <img width='400px' src='$ads->image_path'><img>
+                </div>
+                <div class='info site-description'>
+                  <div>
+                      Nome: $ads->name
+                  </div>
+                  <div>
+                      Descrição: $ads->description
+                  </div>
+                  <div>
+                      Tag: $ads->tag
+                  </div>
+                </div>
+          </div>
+          ";
+}
+echo "  </div>
+      </div>";
+get_header();
