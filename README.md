@@ -1,13 +1,13 @@
-# Coopersystem Ads Wordpress
+# Coopersystem Ads WordPress
 ### Proposta
 
-Resolução do desafio proposto pela Coopersystem
+*Resolução do desafio proposto pela Coopersystem*
 
 O projeto consiste em uma funcionalidade desenvolvida para WordPress que gerencie anuncios.
 
 ## Aplicação
 
-A aplicação foi desenvolvida em Wordpress tendo como banco de dados o MySQL.
+A aplicação foi desenvolvida em WordPress tendo como banco de dados o MySQL.
 
 ## Pré-requisitos para o setup:
 
@@ -17,51 +17,51 @@ A aplicação foi desenvolvida em Wordpress tendo como banco de dados o MySQL.
 
 ### Instalação
 1. Clone o repositório para o seu ambiente de desenvolvimento.
-
+```
 git clone https://github.com/pedroholiveira1998/ads-wordpress.git
-
+```
 
 2. Vá ao diretório raiz do projeto e execute o comando para subir os containers e instalar as dependências
-
+```
 sudo docker-compose up --build
-
+```
 
 ### Acessos:
-URL da aplicação
-
+URL da aplicação:
+```
 http://localhost:8000
-
-URL do phpMyAdmin
-
+```
+URL do phpMyAdmin:
+```
 http://localhost:8080
-
+```
 Usuario para acesso phpMyAdmin:
-
+```
 wordpress
-
+```
 Senha para acesso phpMyAdmin:
-
+```
 wordpress
-
+```
 
 
 ### Configurações
 
 1. Abra o URL da aplicação e selecione a linguagem desejada.
 
-2. Preencha os campos e instale o Wordpress.
+2. Preencha os campos e instale o WordPress.
 
-3. Logue com as credencias que cadastrou e no menu lateral esquerdo clique em Plugins.
+3. Logue com as credencias que cadastrou na tela anterior e no menu lateral esquerdo clique em Plugins.
 
 4. Ative o plugin Coopersystem ads challenger.
 
 5. Desative extensões de bloqueadores de anuncios. (algumas extensões bloqueam o uso de palavras como ads, anuncio, etc...)
 
-*Obs:* No momento da ativação se cria a tabela wp_ads no banco de dados. 
+**Obs:** No momento da ativação se cria a tabela wp_ads no banco de dados. 
 
 ### Usabilidade
 
-Ao ativar o Plugin no menu lateral esquerdo selecione o ícone referente a ele, nesse momento você será redirecionado para a tela que possibilita fazer Cadastro de um anuncio, alterar o anuncio, deletar um anuncio e listar anuncios. Na lista será visivel ao administrador todas as informações referentes ao anuncio, incluindo a data de criação e o criador do anuncio e a data de atualização e quem fez a ultima atualização.<br /><br />
+Ao ativar o Plugin no menu lateral esquerdo, selecione o ícone referente a ele, nesse momento você será redirecionado para a tela que possibilita fazer o cadastro de um anuncio, alterar o anuncio, deletar um anuncio e listar anuncios.Na lista será visivel ao administrador todas as informações referentes ao anuncio, incluindo a data de criação e o criador do anuncio e a data de atualização e quem fez a ultima atualização.<br /><br />
 Na tela principal do site será listados os anuncios sendo possível aplicar alguns filtros. 
 - Buscar por parte do nome, tag.
 - Ordenar por data de criação.
