@@ -85,10 +85,10 @@ function adsAdminPage()
   
   wp_enqueue_media();
 ?>
-
-  <div class="wrap">
+  <head>
     <script src="../wp-content/plugins/ads/script.js"></script>
-
+  </head>
+  <div class="wrap">
     <h2>Gerenciar Anuncios</h2>
     <table class="wp-list-table widefat striped">
       <thead>
@@ -104,7 +104,7 @@ function adsAdminPage()
           <tr>
             <td>
                 <input type="text" id="new-image" name="imagepath" required>
-                <input type="button" name="upload-btn" id="upload-btn" class="button-secondary" value="Upload Image">
+                <input type="button" name="upload-btn" id="upload-btn" class="button-secondary" value="Selecionar imagem">
             </td>
             <td><input type="text" id="new-name" name="name" required></td>
             <td><input type="text" id="new-email" name="description" required></td>
@@ -156,6 +156,8 @@ function adsAdminPage()
 
     <?php
     if (isset($_GET['update'])) {
+      wp_enqueue_script('jquery');
+      wp_enqueue_media();
       $upt_id = $_GET['update'];
       $result = $wpdb->get_results("SELECT * FROM $table_name WHERE id='$upt_id'");
       foreach ($result as $ads) {
@@ -164,8 +166,12 @@ function adsAdminPage()
         $tag = $ads->tag;
         $image_path = $ads->image_path;
       }
-      
+      wp_enqueue_script('jquery');
+      wp_enqueue_media();
       echo "
+      <head>
+        <script src='../wp-content/plugins/ads/scriptmodal.js'></script>
+      </head>
       <table class='wp-list-table widefat striped'>
         <thead>
           <tr>
@@ -180,13 +186,13 @@ function adsAdminPage()
             <tr>
               <td style='display:none'><input type='text' id='update-id' name='id' value='$ads->id'></td>
               <td width='20%'>
-              <input type='text' id='new-image' name='imagepath' value='$ads->image_path' required>
-              <input type='button' name='upload-btn' id='upload-btn' class='button-secondary' value='Upload Image'>
+              <input type='text' id='new-image-upload' name='imagepath' value='$ads->image_path' required>
+              <input type='button' name='upload-btn' id='btn-upload' class='button-secondary' value='Selecionar imagem'>
               </td>
               <td width='20%'><input type='text' id='update-name' name='name' value='$ads->name' required></td>
               <td width='20%'><input type='text' id='update-description' name='description' value='$ads->description' required></td>
               <td width='20%'><input type='text' id='update-tag' name='tag' value='$ads->tag' required></td>
-              <td width='20%'><button id='updatetsubmit' name='updatesubmit' type='submit'>UPDATE</button> <a href='admin.php?page=ads%2Fads.php'><button type='button'>CANCEL</button></a></td>
+              <td width='20%'><button id='updatetsubmit' name='updatesubmit' type='submit'>Atualizar</button> <a href='admin.php?page=ads%2Fads.php'><button type='button'>Cancelar</button></a></td>
             </tr>
           </form>
         </tbody>
